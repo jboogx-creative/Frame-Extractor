@@ -13,7 +13,11 @@
       "Bash(cat:*)",
       "Bash(ipconfig getifaddr:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit - Frame Extractor PWA v0.2.0-beta\n\nPhase 1 & 2 Complete:\n- Video upload from camera roll\n- Frame-by-frame scrubbing (1/30 second precision)\n- Frame extraction with direct download\n- Marline Design System implementation\n- Mobile-optimized responsive layout\n- SVG play/pause icons\n- iOS Safari compatibility\n\nBuilt with React + Vite + Tailwind CSS\n\n🤖 Generated with Claude Code (https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
