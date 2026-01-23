@@ -157,26 +157,42 @@ function VideoPlayer({ videoFile, onBack }) {
   const handleExtractFirstFrame = async () => {
     if (!videoRef.current) return;
 
-    // Seek to first frame
+    // Seek to first frame and wait for it to complete
     videoRef.current.currentTime = 0.001;
     setCurrentTime(0.001);
 
-    // Small delay for seek to complete, then extract
-    await new Promise(resolve => setTimeout(resolve, 100));
-    handleExtractFrame();
+    // Wait for seek to complete using the 'seeked' event
+    await new Promise(resolve => {
+      const onSeeked = () => {
+        videoRef.current.removeEventListener('seeked', onSeeked);
+        resolve();
+      };
+      videoRef.current.addEventListener('seeked', onSeeked);
+    });
+
+    // Now extract the frame
+    await handleExtractFrame();
   };
 
   const handleExtractLastFrame = async () => {
     if (!videoRef.current || !duration) return;
 
-    // Seek to last frame (slightly before end to ensure we get the last frame)
+    // Seek to last frame and wait for it to complete
     const lastFrameTime = duration - 0.001;
     videoRef.current.currentTime = lastFrameTime;
     setCurrentTime(lastFrameTime);
 
-    // Small delay for seek to complete, then extract
-    await new Promise(resolve => setTimeout(resolve, 100));
-    handleExtractFrame();
+    // Wait for seek to complete using the 'seeked' event
+    await new Promise(resolve => {
+      const onSeeked = () => {
+        videoRef.current.removeEventListener('seeked', onSeeked);
+        resolve();
+      };
+      videoRef.current.addEventListener('seeked', onSeeked);
+    });
+
+    // Now extract the frame
+    await handleExtractFrame();
   };
 
   return (
