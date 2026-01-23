@@ -21,9 +21,14 @@ function UploadScreen({ onVideoSelect }) {
       {/* Central Content - Vertically Aligned */}
       <div className="text-center">
         {/* App Title - Marline Label Style */}
-        <h1 className="marline-label text-sm mb-16 opacity-70">
+        <h1 className="marline-label text-sm mb-3 opacity-70">
           FRAME EXTRACTOR
         </h1>
+
+        {/* Credit Line */}
+        <p className="marline-label text-[10px] mb-12 opacity-30">
+          BY JBOOGXCREATIVE, FOR THE COMMUNITY
+        </p>
 
         {/* Upload Area */}
         <div className="w-full max-w-xs">
