@@ -1,6 +1,8 @@
 // VideoPlayer.jsx - Marline Design System Implementation
 import { useState, useRef, useEffect } from 'react';
 import { extractFrame, generateFrameName } from '../utils/frameExtractor';
+import { useFpsDetection } from '../hooks/useFpsDetection';
+import { formatTimecode, getFrameNumber, getScrubberStep, formatFpsDisplay } from '../utils/timecode';
 
 function VideoPlayer({ videoFile, onBack }) {
   // --- STATE MANAGEMENT ---
@@ -12,6 +14,9 @@ function VideoPlayer({ videoFile, onBack }) {
   const [showSuccess, setShowSuccess] = useState(false);
   const [isScrubbing, setIsScrubbing] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
+
+  // --- FPS DETECTION ---
+  const { fps, detectFps, isDetecting } = useFpsDetection();
 
   // --- REFS ---
   const videoRef = useRef(null);
@@ -28,9 +33,26 @@ function VideoPlayer({ videoFile, onBack }) {
 
   // --- EVENT HANDLERS ---
 
-  const handleLoadedMetadata = () => {
+  const handleLoadedMetadata = async () => {
     if (videoRef.current) {
       setDuration(videoRef.current.duration);
+
+      // Detect FPS by briefly playing the video (muted)
+      const wasMuted = videoRef.current.muted;
+      videoRef.current.muted = true;
+
+      try {
+        // Play briefly to get frame callbacks for FPS detection
+        await videoRef.current.play();
+        await detectFps(videoRef.current);
+      } catch (error) {
+        console.log('FPS detection skipped:', error.message);
+      } finally {
+        // Restore state
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+        videoRef.current.muted = wasMuted;
+      }
     }
   };
 
@@ -94,15 +116,9 @@ function VideoPlayer({ videoFile, onBack }) {
     setIsScrubbing(false);
   };
 
-  const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = Math.floor(timeInSeconds % 60);
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  };
-
-  // Calculate current frame number (assuming 30fps)
+  // Calculate current frame number using detected FPS
   const getCurrentFrame = () => {
-    return Math.floor(currentTime * 30) + 1;
+    return getFrameNumber(currentTime, fps);
   };
 
   // Generate tick marks for timeline (every second = 30 frames)
@@ -136,6 +152,31 @@ function VideoPlayer({ videoFile, onBack }) {
       console.error('Error extracting frame:', error);
       alert('Failed to extract frame. Please try again.');
     }
+  };
+
+  const handleExtractFirstFrame = async () => {
+    if (!videoRef.current) return;
+
+    // Seek to first frame
+    videoRef.current.currentTime = 0.001;
+    setCurrentTime(0.001);
+
+    // Small delay for seek to complete, then extract
+    await new Promise(resolve => setTimeout(resolve, 100));
+    handleExtractFrame();
+  };
+
+  const handleExtractLastFrame = async () => {
+    if (!videoRef.current || !duration) return;
+
+    // Seek to last frame (slightly before end to ensure we get the last frame)
+    const lastFrameTime = duration - 0.001;
+    videoRef.current.currentTime = lastFrameTime;
+    setCurrentTime(lastFrameTime);
+
+    // Small delay for seek to complete, then extract
+    await new Promise(resolve => setTimeout(resolve, 100));
+    handleExtractFrame();
   };
 
   return (
@@ -219,13 +260,13 @@ function VideoPlayer({ videoFile, onBack }) {
 
           {/* Timeline with Marline Typography */}
           <div className="flex-1 space-y-1 md:space-y-2">
-            {/* Marline Label - Time & Frame */}
+            {/* Marline Label - Time & Frame with FPS */}
             <div className="flex justify-between items-center">
               <span className="marline-label text-[10px] opacity-50">
-                {isScrubbing ? `FRAME ${getCurrentFrame()}` : 'TIME'}
+                {isScrubbing ? `FRAME ${getCurrentFrame()}` : `${formatFpsDisplay(fps)} FPS`}
               </span>
               <span className="marline-data text-sm font-mono">
-                {formatTime(currentTime)} / {formatTime(duration)}
+                {formatTimecode(currentTime, fps)} / {formatTimecode(duration, fps)}
               </span>
             </div>
 
@@ -257,7 +298,7 @@ function VideoPlayer({ videoFile, onBack }) {
                 onMouseUp={handleScrubEnd}
                 onTouchStart={handleScrubStart}
                 onTouchEnd={handleScrubEnd}
-                step={1/30}
+                step={getScrubberStep(fps)}
                 className="
                   relative z-10
                   w-full h-[1px] bg-white/20
@@ -288,25 +329,64 @@ function VideoPlayer({ videoFile, onBack }) {
           </div>
         )}
 
-        {/* Extract Frame Label & Action */}
+        {/* Extract Frame Label & Action - Three Buttons */}
         <div className="text-center space-y-1.5 md:space-y-4">
           <p className="marline-label text-[10px] opacity-50">EXTRACT</p>
-          <button
-            onClick={handleExtractFrame}
-            className="
-              celestial-orb
-              w-14 h-14 md:w-24 md:h-24 mx-auto
-              flex items-center justify-center
-              transition-all duration-500 ease-out
-              hover:shadow-[0_0_60px_rgba(255,255,255,0.3)]
-              hover:scale-105
-              active:scale-95
-            "
-          >
-            <span className="marline-label text-[9px] md:text-xs opacity-90">
-              FRAME
-            </span>
-          </button>
+          <div className="flex justify-center items-center gap-4 md:gap-8">
+            {/* First Frame Button */}
+            <button
+              onClick={handleExtractFirstFrame}
+              className="
+                celestial-orb
+                w-14 h-14 md:w-24 md:h-24
+                flex items-center justify-center
+                transition-all duration-500 ease-out
+                hover:shadow-[0_0_60px_rgba(255,255,255,0.3)]
+                hover:scale-105
+                active:scale-95
+              "
+            >
+              <span className="marline-label text-[9px] md:text-xs opacity-90">
+                FIRST
+              </span>
+            </button>
+
+            {/* Current Frame Button */}
+            <button
+              onClick={handleExtractFrame}
+              className="
+                celestial-orb
+                w-14 h-14 md:w-24 md:h-24
+                flex items-center justify-center
+                transition-all duration-500 ease-out
+                hover:shadow-[0_0_60px_rgba(255,255,255,0.3)]
+                hover:scale-105
+                active:scale-95
+              "
+            >
+              <span className="marline-label text-[9px] md:text-xs opacity-90">
+                FRAME
+              </span>
+            </button>
+
+            {/* Last Frame Button */}
+            <button
+              onClick={handleExtractLastFrame}
+              className="
+                celestial-orb
+                w-14 h-14 md:w-24 md:h-24
+                flex items-center justify-center
+                transition-all duration-500 ease-out
+                hover:shadow-[0_0_60px_rgba(255,255,255,0.3)]
+                hover:scale-105
+                active:scale-95
+              "
+            >
+              <span className="marline-label text-[9px] md:text-xs opacity-90">
+                LAST
+              </span>
+            </button>
+          </div>
         </div>
 
         {/* Horizon Line Separator */}

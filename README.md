@@ -2,14 +2,18 @@
 
 A minimalist Progressive Web App for extracting frames from videos on mobile devices.
 
-![Status](https://img.shields.io/badge/status-phase%201%20%26%202%20complete-brightgreen)
-![Phase](https://img.shields.io/badge/phase-3%20PWA%20implementation-blue)
+![Status](https://img.shields.io/badge/status-production%20ready-brightgreen)
+![Phase](https://img.shields.io/badge/phase-3%20complete-success)
+![Live](https://img.shields.io/badge/live-Vercel-black)
 
 ## Overview
 
 Frame Extractor is a mobile-first PWA designed for content creators who need to quickly extract individual frames from videos. Built with simplicity and performance in mind, it offers a smooth, intuitive experience for frame extraction on mobile devices.
 
 **Perfect for**: Content creators working with AI video generation tools who need high-quality frame extraction.
+
+**🌐 Live App**: [https://frame-extractor-bice.vercel.app/](https://frame-extractor-bice.vercel.app/)
+**📱 Install**: Open in Safari on iOS → Share → Add to Home Screen
 
 ## Features
 
@@ -25,6 +29,8 @@ Frame Extractor is a mobile-first PWA designed for content creators who need to 
 - 👆 **Intuitive UX** - "TAP PLAY TO BEGIN" overlay for clear first interaction
 - ⚡ **Fast & Lightweight** - No bloat, just core functionality
 - 🍎 **iOS Safari Compatible** - Inline playback, scrubbing while paused
+- 📲 **PWA Installable** - Add to home screen on iPhone for native-like experience
+- ☁️ **Deployed** - Live at https://frame-extractor-bice.vercel.app/
 
 ## Tech Stack
 
@@ -34,7 +40,9 @@ Frame Extractor is a mobile-first PWA designed for content creators who need to 
 - **Design System**: Marline Design System ("The Void" theme)
 - **Typography**: Montserrat (Google Fonts)
 - **Video Processing**: HTML5 Video API + Canvas API
-- **PWA**: Service Worker + Web App Manifest (Phase 3)
+- **PWA**: Service Worker + Web App Manifest (vite-plugin-pwa)
+- **Deployment**: Vercel
+- **Repository**: GitHub
 
 ## Design System
 
@@ -140,12 +148,14 @@ frame-extractor/
 - [x] "TAP PLAY TO BEGIN" overlay
 - [x] iOS Safari compatibility fixes
 
-### ⏳ Phase 3: PWA Implementation (Next)
-- [ ] Web App Manifest
-- [ ] Service Worker
-- [ ] App icons (192x192, 512x512)
-- [ ] Offline support
-- [ ] Installation prompt
+### ✅ Phase 3: PWA Implementation (Complete)
+- [x] Web App Manifest
+- [x] Service Worker (vite-plugin-pwa)
+- [x] App icons (192x192, 512x512)
+- [x] Offline support with Workbox caching
+- [x] iOS installation support
+- [x] Deployed to Vercel
+- [x] Tested on iPhone
 
 ### ⏳ Phase 4: Testing & Refinement
 - [ ] Cross-browser testing
@@ -235,7 +245,8 @@ MIT
 
 ---
 
-**Status**: Phase 1 & 2 Complete ✅ - Fully functional with Marline Design System
-**Version**: 0.2.0-beta
-**Next**: Phase 3 - PWA Implementation (manifest, service worker, offline support)
+**Status**: Phase 1, 2 & 3 Complete ✅ - Production-Ready PWA
+**Version**: 1.0.0
+**Live URL**: https://frame-extractor-bice.vercel.app/
+**Next**: Phase 4 - Testing & Refinement (optional enhancements)
 **Last Updated**: November 22, 2024
