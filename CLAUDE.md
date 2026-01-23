@@ -26,15 +26,18 @@ Single-purpose tool that does one thing exceptionally well: extract frames from 
 
 ### Key Features
 1. Upload video from camera roll
-2. Frame-by-frame scrubbing (1/30 second precision) with visual tick marks
-3. Extract current frame as PNG (native video resolution)
-4. Direct download to device with sequential file naming
-5. Sequential file naming (frame_001.png, frame_002.png, etc.)
-6. Marline Design System aesthetic with celestial geometry
-7. SVG play/pause icons with smooth animations
-8. "TAP PLAY TO BEGIN" overlay for intuitive first interaction
-9. Mobile-optimized layout (55vh video on mobile, 50vh on desktop)
-10. iOS Safari compatibility (inline playback, scrubbing while paused)
+2. **Automatic FPS detection** using requestVideoFrameCallback API
+3. **MM:SS:FF timecode display** (like Adobe Premiere)
+4. Frame-by-frame scrubbing with **dynamic step size** based on detected FPS
+5. Extract current frame as PNG (native video resolution)
+6. **First/Last frame quick extraction buttons** (FIRST | FRAME | LAST)
+7. Direct download to device with sequential file naming (frame_001.png, etc.)
+8. Marline Design System aesthetic with celestial geometry
+9. SVG play/pause icons with smooth animations
+10. "TAP PLAY TO BEGIN" overlay for intuitive first interaction
+11. Mobile-optimized layout (55vh video on mobile, 50vh on desktop)
+12. iOS Safari compatibility (inline playback, scrubbing while paused)
+13. Credit line: "By jboogxcreative, for the community"
 
 ---
 
@@ -51,14 +54,13 @@ Single-purpose tool that does one thing exceptionally well: extract frames from 
 ```
 src/
 ├── components/          # React components
-│   ├── UploadScreen.jsx
-│   ├── VideoPlayer.jsx
-│   ├── Controls.jsx
-│   └── SuccessMessage.jsx
+│   ├── UploadScreen.jsx    # Upload screen with credit line
+│   └── VideoPlayer.jsx     # Video player with all controls
 ├── hooks/               # Custom React hooks
+│   └── useFpsDetection.js  # FPS detection using requestVideoFrameCallback
 ├── utils/               # Helper functions
-│   ├── frameExtractor.js
-│   └── fileNaming.js
+│   ├── frameExtractor.js   # Canvas-based frame extraction
+│   └── timecode.js         # MM:SS:FF timecode formatting
 ├── App.jsx             # Main app component
 ├── main.jsx            # Entry point
 └── index.css           # Tailwind + global styles
@@ -144,7 +146,21 @@ src/
 
 **Success**: ✅ App installs to home screen, deployed at https://frame-extractor-bice.vercel.app/
 
-### Phase 4: Testing & Refinement
+### Phase 4: Enhanced Features ✅ (Complete)
+**Goal**: Add advanced frame extraction features
+
+**Tasks**:
+- [x] Automatic FPS detection using requestVideoFrameCallback API
+- [x] MM:SS:FF timecode display (like Adobe Premiere)
+- [x] Dynamic scrubber step based on detected FPS
+- [x] First Frame quick extraction button
+- [x] Last Frame quick extraction button
+- [x] Three-button layout (FIRST | FRAME | LAST)
+- [x] Credit line on upload screen
+
+**Success**: ✅ Pro-level timecode display and quick extraction buttons
+
+### Phase 5: Testing & Refinement
 **Goal**: Bug fixes and final polish
 
 **Tasks**:
@@ -299,8 +315,8 @@ src/
 
 ---
 
-**Current Status**: Phase 1, 2 & 3 Complete ✅ - Fully functional PWA deployed and installable!
+**Current Status**: Phase 1, 2, 3 & 4 Complete ✅ - Full-featured PWA with pro-level timecode!
 **Live URL**: https://frame-extractor-bice.vercel.app/
-**Next Milestone**: Phase 4 - Testing & Refinement (optional enhancements)
+**Next Milestone**: Phase 5 - Testing & Refinement (optional)
 **Developer Level**: First coding project - be patient, explain thoroughly, encourage learning
-**What Works**: Everything! Upload, scrubbing, extraction, Marline design, PWA installation, deployed to production
+**What Works**: Everything! Upload, FPS detection, MM:SS:FF timecode, First/Last frame buttons, scrubbing, extraction, Marline design, PWA installation, credit line, deployed to production

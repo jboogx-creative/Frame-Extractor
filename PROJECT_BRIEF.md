@@ -45,7 +45,9 @@ A minimalist Progressive Web App designed for content creators to quickly extrac
 ### 2. Video Playback
 - Custom minimal player with Marline aesthetic
 - SVG play/pause icons with smooth animations
-- Frame-by-frame timeline scrubber (1/30 second steps)
+- **Automatic FPS detection** using requestVideoFrameCallback API
+- **MM:SS:FF timecode display** (like Adobe Premiere)
+- Frame-by-frame timeline scrubber with **dynamic step size** based on detected FPS
 - Real-time video preview while scrubbing
 - Visual tick marks for frame indication
 - Frame counter display while scrubbing
@@ -55,8 +57,11 @@ A minimalist Progressive Web App designed for content creators to quickly extrac
 - iOS Safari compatibility (inline playback, scrubbing while paused)
 
 ### 3. Frame Extraction
-- Extract current frame as PNG
-- Native video resolution (no scaling)
+- **Three extraction buttons**: FIRST | FRAME | LAST
+- **FIRST button**: Instantly extracts first frame of video
+- **LAST button**: Instantly extracts last frame of video
+- **FRAME button**: Extracts current frame
+- Extract as PNG at native video resolution (no scaling)
 - Sequential naming: frame_001.png, frame_002.png, etc.
 - Numbering resets each session
 - Direct download to device
@@ -202,7 +207,18 @@ A minimalist Progressive Web App designed for content creators to quickly extrac
 
 **Milestone**: ✅ App installs to home screen, deployed at https://frame-extractor-bice.vercel.app/
 
-### Phase 4: Testing & Refinement (Week 4)
+### Phase 4: Enhanced Features ✅ (Complete)
+- [x] Automatic FPS detection (requestVideoFrameCallback API)
+- [x] MM:SS:FF timecode display (like Adobe Premiere)
+- [x] Dynamic scrubber step based on detected FPS
+- [x] First Frame quick extraction button
+- [x] Last Frame quick extraction button
+- [x] Three-button layout (FIRST | FRAME | LAST)
+- [x] Credit line on upload screen ("By jboogxcreative, for the community")
+
+**Milestone**: ✅ Pro-level timecode and quick extraction features
+
+### Phase 5: Testing & Refinement
 - Cross-browser testing
 - Edge case handling
 - Performance optimization
@@ -284,9 +300,10 @@ A minimalist Progressive Web App designed for content creators to quickly extrac
 
 ---
 
-**Current Status**: Phase 1, 2 & 3 Complete ✅ - Production-ready PWA!
+**Current Status**: Phase 1, 2, 3 & 4 Complete ✅ - Full-featured production PWA!
 **Live URL**: https://frame-extractor-bice.vercel.app/
-**Next Step**: Phase 4 - Testing & Refinement (optional)
-**Timeline**: 4-week development cycle (3 weeks complete)
+**Next Step**: Phase 5 - Testing & Refinement (optional)
+**Timeline**: 4-week development cycle (4 weeks complete)
 **Developer Experience**: First project - successfully completed!
-**Key Features Working**: All features complete! Upload, scrubbing, extraction, Marline design, PWA installation, deployed
+**Key Features Working**: All features complete! Upload, FPS detection, MM:SS:FF timecode, First/Last frame buttons, scrubbing, extraction, Marline design, PWA installation, credit line, deployed
+**Created By**: jboogxcreative, for the community

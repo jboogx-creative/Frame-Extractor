@@ -3,7 +3,7 @@
 A minimalist Progressive Web App for extracting frames from videos on mobile devices.
 
 ![Status](https://img.shields.io/badge/status-production%20ready-brightgreen)
-![Phase](https://img.shields.io/badge/phase-3%20complete-success)
+![Phase](https://img.shields.io/badge/phase-4%20complete-success)
 ![Live](https://img.shields.io/badge/live-Vercel-black)
 
 ## Overview
@@ -19,7 +19,10 @@ Frame Extractor is a mobile-first PWA designed for content creators who need to 
 
 - 📱 **Mobile-First Design** - Optimized for iOS Safari, fits on one screen without scrolling
 - 🎬 **Video Upload** - Import videos directly from your camera roll
-- 🎯 **Frame-by-Frame Scrubbing** - Precise 1/30 second steps with visual tick marks
+- 🎯 **Automatic FPS Detection** - Detects video frame rate using requestVideoFrameCallback API
+- ⏱️ **Pro Timecode Display** - MM:SS:FF format like Adobe Premiere (Minutes:Seconds:Frame)
+- 🎚️ **Dynamic Scrubbing** - Frame-accurate steps that adapt to detected FPS
+- ⏮️⏭️ **Quick Extract Buttons** - FIRST | FRAME | LAST buttons for instant extraction
 - 📸 **Frame Extraction** - Save frames as high-quality PNG (native resolution)
 - 💾 **Direct Download** - Simple, instant download to device
 - 📝 **Auto-Naming** - Sequential file naming (frame_001.png, frame_002.png, etc.)
@@ -31,6 +34,7 @@ Frame Extractor is a mobile-first PWA designed for content creators who need to 
 - 🍎 **iOS Safari Compatible** - Inline playback, scrubbing while paused
 - 📲 **PWA Installable** - Add to home screen on iPhone for native-like experience
 - ☁️ **Deployed** - Live at https://frame-extractor-bice.vercel.app/
+- 💜 **Community Built** - By jboogxcreative, for the community
 
 ## Tech Stack
 
@@ -107,21 +111,20 @@ frame-extractor/
 ├── public/              # Static assets (icons, manifest)
 ├── src/
 │   ├── components/      # React components
-│   │   ├── UploadScreen.jsx
-│   │   ├── VideoPlayer.jsx
-│   │   ├── Controls.jsx
-│   │   └── SuccessMessage.jsx
-│   ├── hooks/          # Custom React hooks
-│   ├── utils/          # Helper functions
-│   │   ├── frameExtractor.js
-│   │   └── fileNaming.js
-│   ├── App.jsx         # Main app component
-│   ├── main.jsx        # Entry point
-│   └── index.css       # Global styles
-├── Docs/               # Project documentation
-├── CLAUDE.md           # Development instructions
-├── PROJECT_BRIEF.md    # Project overview
-└── README.md           # This file
+│   │   ├── UploadScreen.jsx    # Upload screen with credit line
+│   │   └── VideoPlayer.jsx     # Video player with all controls
+│   ├── hooks/           # Custom React hooks
+│   │   └── useFpsDetection.js  # FPS detection hook
+│   ├── utils/           # Helper functions
+│   │   ├── frameExtractor.js   # Canvas-based frame extraction
+│   │   └── timecode.js         # MM:SS:FF timecode formatting
+│   ├── App.jsx          # Main app component
+│   ├── main.jsx         # Entry point
+│   └── index.css        # Global styles
+├── Docs/                # Project documentation
+├── CLAUDE.md            # Development instructions
+├── PROJECT_BRIEF.md     # Project overview
+└── README.md            # This file
 ```
 
 ## Development Phases
@@ -157,7 +160,16 @@ frame-extractor/
 - [x] Deployed to Vercel
 - [x] Tested on iPhone
 
-### ⏳ Phase 4: Testing & Refinement
+### ✅ Phase 4: Enhanced Features (Complete)
+- [x] Automatic FPS detection (requestVideoFrameCallback API)
+- [x] MM:SS:FF timecode display (like Adobe Premiere)
+- [x] Dynamic scrubber step based on detected FPS
+- [x] First Frame quick extraction button
+- [x] Last Frame quick extraction button
+- [x] Three-button layout (FIRST | FRAME | LAST)
+- [x] Credit line on upload screen
+
+### ⏳ Phase 5: Testing & Refinement
 - [ ] Cross-browser testing
 - [ ] Performance optimization
 - [ ] Error handling
@@ -171,13 +183,16 @@ frame-extractor/
 
 2. **Navigate the Video**
    - Tap the play button to begin (removes "TAP PLAY TO BEGIN" overlay)
-   - Use the timeline scrubber for frame-by-frame control (1/30 second steps)
-   - Watch the frame counter while scrubbing
+   - Use the timeline scrubber for frame-by-frame control
+   - Scrubber automatically adjusts to your video's FPS (24, 30, 60, etc.)
+   - Watch the MM:SS:FF timecode display (like Adobe Premiere)
    - Tap play/pause to control playback
 
-3. **Extract Frame**
-   - Tap "FRAME" button
-   - Frame downloads instantly as PNG to your device
+3. **Extract Frames**
+   - **FIRST** button - Instantly extracts the first frame
+   - **FRAME** button - Extracts the current frame
+   - **LAST** button - Instantly extracts the last frame
+   - All frames download as PNG to your device
 
 4. **Start New Video**
    - Tap "NEW VIDEO" button to return to upload screen
@@ -219,11 +234,6 @@ This is a personal learning project, but suggestions and feedback are welcome!
 
 ## Roadmap
 
-### Phase 3 (Next)
-- PWA implementation (manifest, service worker, offline support)
-- App icons and splash screen
-- Installation prompt
-
 ### Future Enhancements
 - Batch frame extraction (multiple frames at once)
 - Custom file naming templates
@@ -245,8 +255,9 @@ MIT
 
 ---
 
-**Status**: Phase 1, 2 & 3 Complete ✅ - Production-Ready PWA
-**Version**: 1.0.0
+**Status**: Phase 1, 2, 3 & 4 Complete ✅ - Full-Featured Production PWA
+**Version**: 1.1.0
 **Live URL**: https://frame-extractor-bice.vercel.app/
-**Next**: Phase 4 - Testing & Refinement (optional enhancements)
-**Last Updated**: November 22, 2024
+**Next**: Phase 5 - Testing & Refinement (optional)
+**Last Updated**: January 2025
+**Created By**: jboogxcreative, for the community
